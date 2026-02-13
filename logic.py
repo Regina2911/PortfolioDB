@@ -36,6 +36,16 @@ class DB_Manager:
                         )''')
             conn.commit()
 
+    def add_photo_column(self):
+        conn = sqlite3.connect(self.database)
+        with conn:
+            conn.execute("ALTER TABLE projects ADD COLUMN photo TEXT")
+
+    def get_status_name_by_id(self, status_id):
+        sql = "SELECT status_name FROM status WHERE status_id = ?"
+        res = self._DB_Manager__select_data(sql, (status_id,))
+        return res[0][0] if res else None
+
     def __executemany(self, sql, data):
         conn = sqlite3.connect(self.database)
         with conn:
@@ -133,4 +143,4 @@ if __name__ == '__main__':
     manager = DB_Manager(DATABASE)
     #manager.create_tables()
     #manager.default_insert()
-    manager.insert_project([(3, 'Personal-Portfolio-Website', 'My personal portfolio website', 'https://github.com/Regina2911/Personal-Portfolio-Website', 1)])
+    #manager.add_photo_column()
